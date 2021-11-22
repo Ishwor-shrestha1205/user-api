@@ -3,7 +3,7 @@
 ## seedとFakerでランダムなサンプルデータを作成
 1\.　fakerをインストールする
 ```
-Gemile
+Gemfile
 
 gem 'faker'
 gem 'gimei'
