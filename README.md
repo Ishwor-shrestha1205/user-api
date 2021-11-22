@@ -1,5 +1,101 @@
 # RailsでUSER-APIを実装する
 
+## 手順
+1\.　APIモードでRailsアプリの作成
+
+2\.　モデル・コントローラの作成
+
+3\.　ルーティングの設定
+
+4\.　コントローラの設定
+
+5\.　seedとFakerでランダムなサンプルデータを作成
+
+6\.　test.httpファイルを作成して、HTTP要求の種類別に要求をしてみる
+
+<br />
+
+## APIモードでRailsアプリの作成
+```
+console
+$ rails new user-api --api
+```
+<br />
+
+## モデル・コントローラの作成
+今回はtitleというstringを持ったpostというテーブルを作成します。
+> $ rails g model post first_name:string last_name:string gender:integer
+
+> $ rails g controller users
+
+> $ rails db:create
+
+> $ rake db:migrate
+
+<br />
+
+## ルーティングの設定
+```
+config/routes.rb
+
+ Rails.application.routes.draw do
+   resources :users
+ end
+```
+<br />
+
+## コントローラの設定
+コントローラの中身を外部からajaxリクエスト等で情報の作成・取得・削除・編集が可能になるよう設定します。
+```
+users.controller.rb
+
+class UsersController < ApplicationController
+  before_action :set_user, only: %i[show update destroy]
+
+  def index
+    users = User.order(created_at: :desc)
+    render json: { status: 'SUCCESS', message: 'Loaded users', data: users }
+  end
+
+  def show
+    render json: { status: 'SUCCESS', message: 'Loaded the user', data: @user }
+  end
+
+  def create
+    user = User.new(user_params)
+    if user.save
+      render json: { status: 'SUCCESS', data: user }
+    else
+      render json: { status: 'ERROR', data: user.errors }
+    end
+  end
+
+  def destroy
+    @user.destroy
+    render json: { status: 'SUCCESS', message: 'Deleted the user', data: @user }
+  end
+
+  def update
+    if @user.update(user_params)
+      render json: { status: 'SUCCESS', message: 'Updated the user', data: @user }
+    else
+      render json: { status: 'SUCCESS', message: 'Not updated', data: @user.errors }
+    end
+  end
+
+  private
+
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def user_params
+    params.require(:user).permit(:first_name, :last_name, :gender)
+  end
+end
+```
+<br />
+
 ## seedとFakerでランダムなサンプルデータを作成
 1\.　fakerをインストールする
 ```
