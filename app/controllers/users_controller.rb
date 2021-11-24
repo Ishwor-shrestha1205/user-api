@@ -2,12 +2,14 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show update destroy]
 
   def index
-    users = User.order(created_at: :desc)
-    render json: { status: 'SUCCESS', message: 'Loaded users', data: users }
+    users = User.order(created_at: :asc)
+    # render json: { status: 'SUCCESS', message: 'Loaded users', data: users }
+    render json: users
   end
 
   def show
-    render json: { status: 'SUCCESS', message: 'Loaded the user', data: @user }
+    # render json: { status: 'SUCCESS', message: 'Loaded the user', data: @user }
+    render json: users
   end
 
   def create

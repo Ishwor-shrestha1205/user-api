@@ -14,7 +14,7 @@ Content-Type: application/json
 ###
 
 
-PUT http://127.0.0.1:3000/users/1
+PUT http://127.0.0.1:3000/users/
 Content-Type: application/json
 
 {
