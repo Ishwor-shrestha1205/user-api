@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
   def show
     # render json: { status: 'SUCCESS', message: 'Loaded the user', data: @user }
-    render json: users
+    render json: @user
   end
 
   def create
